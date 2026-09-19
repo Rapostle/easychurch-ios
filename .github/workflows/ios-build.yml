@@ -46,7 +46,8 @@ jobs:
             -configuration Release \
             -archivePath $RUNNER_TEMP/EasyChurch.xcarchive \
             -destination "generic/platform=iOS" \
-            clean archive
+            clean archive \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }}
 
       - name: Create export options plist
         run: |
