@@ -49,7 +49,8 @@ jobs:
             clean archive \
             CODE_SIGN_STYLE=Manual \
             PROVISIONING_PROFILE_SPECIFIER="EasyChurch App Store" \
-            CODE_SIGN_IDENTITY="Apple Distribution"
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            DEVELOPMENT_TEAM=RSMZ9PL42J
 
       - name: Create export options plist
         run: |
