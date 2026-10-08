@@ -5,8 +5,6 @@ struct Cookie {
     var value: String
 }
 
-let gcmMessageIDKey = "00000000000" // update this with actual ID if using Firebase 
-
 // URL for first launch
 let rootUrl = URL(string: "https://easychurch.site/app")!
 
@@ -20,6 +18,16 @@ let authOrigins: [String] = []
 // allowedOrigins + authOrigins <= 10
 
 let platformCookie = Cookie(name: "app-platform", value: "iOS App Store")
+
+// The app shows only its own pages of easychurch.site: the app itself, a church's public page,
+// an event registration page and the privacy policy. Every other page of the website
+// (home page, pricing, giving) is for browsers and is never opened inside the app.
+func isAppPage(_ url: URL) -> Bool {
+    let path = url.path.lowercased()
+    if path == "/app" || path.hasPrefix("/app/") { return true }
+    if path == "/privacy.html" { return true }
+    return path.hasPrefix("/portal/") || path.hasPrefix("/event/")
+}
 
 // UI options
 let displayMode = "standalone" // standalone / fullscreen.

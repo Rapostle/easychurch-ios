@@ -10,10 +10,6 @@ func createWebView(container: UIView, WKSMH: WKScriptMessageHandler, WKND: WKNav
     let userContentController = WKUserContentController()
 
     userContentController.add(WKSMH, name: "print")
-    userContentController.add(WKSMH, name: "push-subscribe")
-    userContentController.add(WKSMH, name: "push-permission-request")
-    userContentController.add(WKSMH, name: "push-permission-state")
-    userContentController.add(WKSMH, name: "push-token")
 
     config.userContentController = userContentController
 
@@ -31,12 +27,6 @@ func createWebView(container: UIView, WKSMH: WKScriptMessageHandler, WKND: WKNav
     webView.scrollView.bounces = false
     webView.scrollView.contentInsetAdjustmentBehavior = .never
     webView.allowsBackForwardNavigationGestures = true
-    
-    // Check if macCatalyst 16.4+ is available and if so, enable web inspector.
-    // This allows the web app to be inspected using Safari Web Inspector. Supported on iOS 16.4+ and macOS 13.3+
-    if #available(iOS 16.4, macOS 13.3, *) {
-        webView.isInspectable = true
-    }
     
     let deviceModel = UIDevice.current.model
     let osVersion = UIDevice.current.systemVersion
@@ -145,6 +135,14 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
 
                 let matchingHostOrigin = allowedOrigins.first(where: { requestHost.range(of: $0) != nil })
                 if (matchingHostOrigin != nil) {
+                    // The app shows only its own pages (see isAppPage in Settings.swift). Any other page of the
+                    // website is not opened inside the app: the app returns to its own start page instead.
+                    let isMainFrame = navigationAction.targetFrame?.isMainFrame ?? true
+                    if (isMainFrame && !isAppPage(requestUrl)) {
+                        decisionHandler(.cancel)
+                        webView.load(URLRequest(url: rootUrl))
+                        return
+                    }
                     // Open in main webview
                     decisionHandler(.allow)
                     if (!toolbarView.isHidden) {

@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25D3517F267A48E0002E5DC0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25D3517E267A48E0002E5DC0 /* GoogleService-Info.plist */; };
 		595F23A525CEFBFE0053416C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F239A25CEFBFD0053416C /* Settings.swift */; };
 		595F23A625CEFBFE0053416C /* Entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 595F239B25CEFBFD0053416C /* Entitlements */; };
 		595F23A725CEFBFE0053416C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595F239C25CEFBFD0053416C /* Assets.xcassets */; };
 		595F23A825CEFBFE0053416C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F239D25CEFBFD0053416C /* SceneDelegate.swift */; };
-		595F23AA25CEFBFE0053416C /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F239F25CEFBFE0053416C /* PushNotifications.swift */; };
 		595F23AC25CEFBFE0053416C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F23A125CEFBFE0053416C /* ViewController.swift */; };
 		595F23AD25CEFBFE0053416C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F23A225CEFBFE0053416C /* AppDelegate.swift */; };
 		595F23AE25CEFBFE0053416C /* Printer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F23A325CEFBFE0053416C /* Printer.swift */; };
@@ -23,14 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		25D3517E267A48E0002E5DC0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "EasyChurch/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4C1C2162A8048FDF52B2A9D0 /* Pods-EasyChurch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyChurch.release.xcconfig"; path = "Target Support Files/Pods-EasyChurch/Pods-EasyChurch.release.xcconfig"; sourceTree = "<group>"; };
 		59333BAA25CFF706003392A4 /* EasyChurch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EasyChurch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		595F239A25CEFBFD0053416C /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = "EasyChurch/Settings.swift"; sourceTree = "<group>"; };
 		595F239B25CEFBFD0053416C /* Entitlements */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Entitlements; path = "EasyChurch/Entitlements"; sourceTree = "<group>"; };
 		595F239C25CEFBFD0053416C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "EasyChurch/Assets.xcassets"; sourceTree = "<group>"; };
 		595F239D25CEFBFD0053416C /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = "EasyChurch/SceneDelegate.swift"; sourceTree = "<group>"; };
-		595F239F25CEFBFE0053416C /* PushNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushNotifications.swift; path = "EasyChurch/PushNotifications.swift"; sourceTree = "<group>"; };
 		595F23A025CEFBFE0053416C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "EasyChurch/Info.plist"; sourceTree = "<group>"; };
 		595F23A125CEFBFE0053416C /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "EasyChurch/ViewController.swift"; sourceTree = "<group>"; };
 		595F23A225CEFBFE0053416C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "EasyChurch/AppDelegate.swift"; sourceTree = "<group>"; };
@@ -78,9 +74,7 @@
 				595F239C25CEFBFD0053416C /* Assets.xcassets */,
 				595F239B25CEFBFD0053416C /* Entitlements */,
 				595F23A025CEFBFE0053416C /* Info.plist */,
-				25D3517E267A48E0002E5DC0 /* GoogleService-Info.plist */,
 				595F23A325CEFBFE0053416C /* Printer.swift */,
-				595F239F25CEFBFE0053416C /* PushNotifications.swift */,
 				595F239D25CEFBFD0053416C /* SceneDelegate.swift */,
 				595F239A25CEFBFD0053416C /* Settings.swift */,
 				595F23A125CEFBFE0053416C /* ViewController.swift */,
@@ -158,7 +152,6 @@
 				CDC0FE292388222C002C8D56 /* Main.storyboard in Resources */,
 				CDC0FE2A2388222C002C8D56 /* LaunchScreen.storyboard in Resources */,
 				595F23A725CEFBFE0053416C /* Assets.xcassets in Resources */,
-				25D3517F267A48E0002E5DC0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +209,6 @@
 				595F23A525CEFBFE0053416C /* Settings.swift in Sources */,
 				595F23AE25CEFBFE0053416C /* Printer.swift in Sources */,
 				595F23AC25CEFBFE0053416C /* ViewController.swift in Sources */,
-				595F23AA25CEFBFE0053416C /* PushNotifications.swift in Sources */,
 				595F23AF25CEFBFE0053416C /* WebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
