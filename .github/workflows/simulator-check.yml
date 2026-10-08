@@ -1,0 +1,95 @@
+name: Simulator check
+
+# Runs the app in an iPhone simulator on GitHub and saves screenshots of what it shows.
+# It lives on its own branch (simulator-check), so it never starts the App Store build
+# and never uploads anything to Apple.
+
+on:
+  push:
+    branches: [ simulator-check ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  simulator:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CocoaPods dependencies
+        run: |
+          pod install
+
+      - name: Pick an iPhone simulator
+        run: |
+          xcrun simctl list devices available | grep -E "iPhone" || true
+          LINE=$(xcrun simctl list devices available | grep -E "^ +iPhone" | grep -v "SE" | tail -1)
+          UDID=$(echo "$LINE" | grep -oE "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" | head -1)
+          if [ -z "$UDID" ]; then echo "No iPhone simulator found"; exit 1; fi
+          echo "Using: $LINE"
+          echo "SIM_UDID=$UDID" >> "$GITHUB_ENV"
+          echo "SIM_LINE=$LINE" >> "$GITHUB_ENV"
+
+      - name: Build for the simulator (same code as the App Store build, unsigned)
+        run: |
+          xcodebuild -workspace EasyChurch.xcworkspace \
+            -scheme EasyChurch \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
+            -derivedDataPath "$RUNNER_TEMP/dd" \
+            build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_STYLE=Automatic PROVISIONING_PROFILE_SPECIFIER="" DEVELOPMENT_TEAM=""
+
+      - name: Run the app and take screenshots
+        run: |
+          APP="$RUNNER_TEMP/dd/Build/Products/Release-iphonesimulator/EasyChurch.app"
+          ls -d "$APP"
+          xcrun simctl boot "$SIM_UDID" || true
+          xcrun simctl bootstatus "$SIM_UDID" -b
+          xcrun simctl install "$SIM_UDID" "$APP"
+          xcrun simctl launch "$SIM_UDID" com.samidengeli.easychurch
+          mkdir -p simulator-shots
+          sleep 15
+          xcrun simctl io "$SIM_UDID" screenshot simulator-shots/1-after-15-seconds.png
+          sleep 30
+          xcrun simctl io "$SIM_UDID" screenshot simulator-shots/2-after-45-seconds.png
+          {
+            echo "commit: $GITHUB_SHA"
+            echo "simulator: $SIM_LINE"
+            echo "taken: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > simulator-shots/info.txt
+          if xcrun simctl spawn "$SIM_UDID" launchctl list | grep -q "com.samidengeli.easychurch"; then
+            echo "app still running after 45 seconds: yes" | tee -a simulator-shots/info.txt
+          else
+            echo "app still running after 45 seconds: NO (it closed or crashed)" | tee -a simulator-shots/info.txt
+            echo "APP_DIED=1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Keep the screenshots (download from this run's page)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-screenshots
+          path: simulator-shots
+          if-no-files-found: warn
+
+      - name: Save the screenshots on this branch
+        if: always()
+        run: |
+          if [ -d simulator-shots ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add simulator-shots
+            git commit -m "Simulator check: screenshots" || true
+            git push origin HEAD:simulator-check || echo "could not save to the branch; use the artifact instead"
+          fi
+
+      - name: Fail if the app did not stay open
+        run: |
+          if [ "$APP_DIED" = "1" ]; then echo "The app did not stay open."; exit 1; fi
