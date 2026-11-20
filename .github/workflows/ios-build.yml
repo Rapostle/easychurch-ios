@@ -3,6 +3,9 @@ name: Build and Upload iOS App
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'ministries/**'
+      - '.github/workflows/ministries-ios.yml'
   workflow_dispatch:
 
 jobs:
